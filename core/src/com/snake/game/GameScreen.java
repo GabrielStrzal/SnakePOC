@@ -1,6 +1,7 @@
 package com.snake.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,12 +35,13 @@ public class GameScreen extends ScreenAdapter{
     }
     @Override
     public void render(float delta) {
+        queryInput();
         timer -= delta;
         if (timer <= 0) {
             timer = MOVE_TIME;
-            snakeX += SNAKE_MOVEMENT;
+            moveSnake();
         }
-
+        checkForOutOfBounds();
         Gdx.gl.glClearColor(Color.BLACK.r, Color.BLACK.g,
                 Color.BLACK.b, Color.BLACK.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -82,5 +84,15 @@ public class GameScreen extends ScreenAdapter{
                 return;
             }
         }
+    }
+    private void queryInput() {
+        boolean lPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean rPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        boolean uPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean dPressed = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        if (lPressed) snakeDirection = LEFT;
+        if (rPressed) snakeDirection = RIGHT;
+        if (uPressed) snakeDirection = UP;
+        if (dPressed) snakeDirection = DOWN;
     }
 }
